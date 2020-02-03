@@ -20,11 +20,15 @@
         function button_clicked () {
             let længde = document.querySelector("#længde").value;
             let bredde = document.querySelector("#bredde").value;
-            let areal = længde * bredde;
+           // let areal = længde * bredde;
 
 
-        let resultat = `Arealet er ${areal} kvadratmeter.`;
+        let resultat = `Arealet er ${areal(længde, bredde)} kvadratmeter.`;
         console.log(resultat);
+        }
+
+        function areal(l, b) {
+            return (l * b);
         }
 
     </script>
