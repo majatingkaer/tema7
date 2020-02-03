@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+
+    <p>Hvor mange timer har du fløjet?</p>
+    <input type="text" id="hours">
+
+    <button>Udregn hvor mange kg Co2 du har fløjet for og kig i consolen...</button>
+
+    <script>
+        let co2 = 109;
+        let co2UdledtIKgVedFlyrejse = hours * co2;
+        document.querySelector("button").addEventListener("click", button_clicked);
+
+        function button_clicked() {
+            let hours = document.querySelector("#hours").value;
+
+
+            let resultat = co2Udregning(hours);
+            console.log(resultat);
+        }
+
+        function co2Udregning(hours) {
+            let a = (hours)
+            if (a > 0) {
+                return (`Du har fløjet ${hours} timer og dermed udledt ${co2UdledtIKgVedFlyrejse} kg Co2 på din rejse.`)
+            }
+
+            if (isNaN) {
+                return (`Fejl. Prøv igen med tal.`)
+            }
+        }
+    </script>
+</body></html>
