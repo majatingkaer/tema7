@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: darkred;
+        }
+
+        #display {
+            width: 23vw;
+            height: 40vw;
+            border: 2px solid yellow;
+            margin: 15vw;
+        }
+
+        .skrift {
+            color: cadetblue;
+            font-size: 2rem;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="display"></div>
+
+    <script>
+        let playlist = ["elefant", "ged", "hund", "kat", "giraf", "hest", "mus", "antilope", "armadillo"];
+        playlist.forEach(sang => {
+            document.querySelector("#display").innerHTML += `${sang} <br>`;
+        })
+        playlist.classList.add("skrift");
+    </script>
+
+</body></html>
