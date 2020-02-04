@@ -16,8 +16,6 @@
     <button>Udregn hvor mange kg Co2 du har fløjet for og kig i consolen...</button>
 
     <script>
-        let co2 = 109;
-        let co2UdledtIKgVedFlyrejse = hours * co2;
         document.querySelector("button").addEventListener("click", button_clicked);
 
         function button_clicked() {
@@ -29,6 +27,8 @@
         }
 
         function co2Udregning(hours) {
+            let co2 = 109;
+            let co2UdledtIKgVedFlyrejse = hours * co2;
             let a = (hours)
             if (a > 0) {
                 return (`Du har fløjet ${hours} timer og dermed udledt ${co2UdledtIKgVedFlyrejse} kg Co2 på din rejse.`)
@@ -38,5 +38,8 @@
                 return (`Fejl. Prøv igen med tal.`)
             }
         }
+
     </script>
-</body></html>
+</body>
+
+</html>
