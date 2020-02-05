@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date</title>
+</head>
+<body>
+
+    <p>Indtast din egen alder her:</p>
+    <input type="text" id="egen_alder">
+
+    <p>Indtast din dates' alder her:</p>
+    <input type="text" id="date_alder">
+
+    <button>Indsend</button>
+
+    <script>
+
+        document.querySelector("button").addEventListener("click", button_clicked);
+
+        function button_clicked () {
+            let selv = document.querySelector("#egen_alder").value;
+            let date = document.querySelector("#date_alder").value;
+            let udregning = selv / date + 7;
+
+            console.log(udregning);
+        }
+
+    </script>
+</body>
+</html>
