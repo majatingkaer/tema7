@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess</title>
+</head>
+<body>
+
+    <p>Skriv et tilfældigt tal herunder mellem 0 og 20 ... </p>
+    <input type="text" id="tal">
+    <button>Send</button>
+
+    <script>
+
+        let random = Math.round(Math.random()*20);
+        console.log(random);
+        document.querySelector("button").addEventListener("click", svar_indsendt)
+
+        function svar_indsendt() {
+        let svar = document.querySelector("#tal").value;
+
+            if (svar < random) {
+                console.log(`Prøv igen! Tallet er større...`)
+            }
+
+            if (svar == random) {
+                console.log(`JA! Det er så godt gættet!!`)
+            }
+
+            if (svar > random) {
+                console.log(`Prøv igen! Tallet er mindre...`)
+            }
+        }
+
+    </script>
+
+</body>
+</html>
