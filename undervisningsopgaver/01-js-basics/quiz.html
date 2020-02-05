@@ -30,7 +30,48 @@
     <button>Indsend svar</button>
 
     <script>
+        document.querySelector("button").addEventListener("click", button_clicked);
+        function button_clicked () {
+        let første = document.querySelector("#blue").value;
+        let anden = document.querySelector("#red").value;
+        let tredje = document.querySelector("#green").value;
+        let fjerde = document.querySelector("#yellow").value;
+        let femte = document.querySelector("#black").value;
+
+            if (første == `blue`) {
+                console.log(`Det er rigtigt!`)
+            }
+
+             if (anden == `red`) {
+                console.log(`Det er rigtigt!`)
+            }
+
+             if (tredje == `green`) {
+                console.log(`Det er rigtigt!`)
+            }
+
+             if (fjerde == `yellow`) {
+                console.log(`Det er rigtigt!`)
+            }
+
+             if (femte == `black`) {
+                console.log(`Det er rigtigt!`)
+            }
+        }
+
 
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
