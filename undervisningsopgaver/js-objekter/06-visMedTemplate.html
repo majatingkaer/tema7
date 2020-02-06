@@ -9,12 +9,26 @@
     <style>
         article {
             border:solid 2px black;
-            width: 200px;
-            margin: 5px;
+            padding: 12px;
         }
 
         h3 {
-            margin-left: 20px;
+            margin-left: 25px;
+        }
+
+        article:nth-child(even) {
+            background-color: yellow;
+        }
+
+        article:first-child {
+            border-radius: 20%;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            max-width: 1200px;
+            grid-gap: 10px;
         }
 
 
@@ -32,6 +46,7 @@
             <p class="levested"></p>
         </article>
     </template>
+    <main></main>
 
     <script>
         document.addEventListener("DOMContentLoaded", visDyr)
@@ -71,7 +86,7 @@
 
 
         function visDyr() {
-            const container = document.querySelector(".data-container");
+            const container = document.querySelector("main");
             const dyrTemplate = document.querySelector("template");
 
             dyr.forEach(enkelt => {
