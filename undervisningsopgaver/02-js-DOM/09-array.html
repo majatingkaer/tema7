@@ -28,9 +28,27 @@
 
     <script>
         let playlist = ["elefant", "ged", "hund", "kat", "giraf", "hest", "mus", "antilope", "armadillo"];
+
         playlist.forEach(sang => {
             document.querySelector("#display").innerHTML += `${sang} <br>`;
+
         })
+
+
+        /* MAN KUNNE OGSÅ GØRE SÅLEDES:
+
+        playlist.forEach(song=> {
+
+        let element = document.createElement("li");
+        let mySong = document.createTextNode(song);
+
+        element.appendChild(mySong);
+
+        document.queryselector("#display").appendChild(element);
+
+        })
+
+        */
 
 
    /*
