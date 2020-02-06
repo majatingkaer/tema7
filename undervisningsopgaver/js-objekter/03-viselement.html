@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html lang="">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <link rel="stylesheet" href="">
+    <style></style>
 </head>
 
 <body>
+    <article id="gris">
+        <h3></h3>
+        <img src="" alt="">
+        <p class="type">Type:</p>
+        <p class="leve">Levested: </p>
+    </article>
 
-   <article>
-       <h3></h3>
-       <img src="" alt="">
-       <p>Type: </p>
-       <p>Levested: </p>
-   </article>
 
     <script>
         document.addEventListener("DOMContentLoaded", start)
+
         const dyr = {
-            "navn":"gris",
-            "type":"pattedyr",
-            "billede":"http://mabe-kea.dk/E19/pics/pig.png", "levested":"svinefarme"};
+            "navn": "Gris",
+            "type": "Pattedyr",
+            "billede": "http://mabe-kea.dk/E19/pics/pig.png",
+            "levested": "Svinefarm"
+        }
 
-        console.log(`Dyr: ${dyr.navn} Type: ${dyr.type} Levested: ${dyr.levested}`);
 
-        function start () {
-            const destination = document.querySelector("article");
+        console.log(`Dyr: ${dyr.navn}, Type: ${dyr.type}, Levested: ${dyr.levested}`);
+
+
+        function start() {
+            const destination = document.querySelector("#gris");
             const navn = `${dyr.navn}`;
+
+
+            // destination.querySelector("p").textContent = gris;
 
             destination.querySelector("h3").textContent = navn;
             destination.querySelector("img").src = dyr.billede;
-            destination.querySelectorAll("article p").forEach(p =>{
-                p.querySelector("p:nth-child(1)").textContent +=`Type: ${dyr.type};`;
-            })
+            destination.querySelector(".type").textContent = `Type: ${dyr.type}`;
+            destination.querySelector(".leve").textContent = `Levested: ${dyr.levested}`;
 
-            /*
-            destination.querySelector("article p:nth-child(2)").textContent =`Levested: ${dyr.levested};`;*/
+
+
         }
 
     </script>
 </body>
+
 </html>
