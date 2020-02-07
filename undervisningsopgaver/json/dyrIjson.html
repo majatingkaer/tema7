@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <style>
+        article {
+            border:solid 2px black;
+            padding: 12px;
+        }
+
+        h3 {
+            margin-left: 25px;
+        }
+
+        article:nth-child(even) {
+            background-color: yellow;
+        }
+
+        article:first-child {
+            border-radius: 20%;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            max-width: 1200px;
+            grid-gap: 10px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <section class="data-container">
+    </section>
+    <template>
+        <article>
+            <h3></h3>
+            <img src="" alt="">
+            <p class="type"></p>
+            <p class="levested"></p>
+        </article>
+    </template>
+    <main></main>
+
+    <script>
+        let dyr = [];
+
+        document.addEventListener("DOMContentLoaded", start)
+
+        function start () {
+            hentJson();
+        }
+
+        async function hentJson() {
+            const jsonData = await fetch("alleDyr.json");
+            dyr = await jsonData.json();
+            visDyr();
+        }
+
+
+        function visDyr() {
+            const container = document.querySelector("main");
+            const dyrTemplate = document.querySelector("template");
+
+            dyr.forEach(enkelt => {
+                let klon = dyrTemplate.cloneNode(true).content;
+               klon.querySelector("h3").textContent=enkelt.navn;
+                klon.querySelector("img").src=enkelt.billede;
+                klon.querySelector(".type").textContent=enkelt.type;
+                klon.querySelector(".levested").textContent=enkelt.levested;
+                container.appendChild(klon);
+            }
+            )
+        }
+
+        /*console.log(`Dyr: ${dyr.navn} Type: ${dyr.type} Levested: ${dyr.levested}`);
+
+        function start () {
+            const destination = document.querySelector("article");
+            const gris = `${dyr.navn} ${dyr.type} ${dyr.levested}`;
+            destination.querySelector("p").textContent = gris;
+            destination.querySelector("img").src = dyr.billede;
+        }*/
+
+    </script>
+</body>
+
+</html>
