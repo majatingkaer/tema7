@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Persongalleri</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            max-width: 1200px;
+            grid-gap: 3vw;
+            margin: 3vw;
+        }
+
+        article {
+            border: 1px solid black;
+        }
+
+        article:nth-child(even) {
+            border-radius: 60%;
+        }
+
+
+        article:nth-child(odd) {
+            border: 1px solid black;
+            animation-name: flyt;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes flyt {
+            0% {
+                background-color: darkred;
+            }
+
+            25% {
+                background-color: #6274c3;
+            }
+
+            75% {
+                background-color: darkgreen;
+            }
+
+            100% {
+                background-color: yellow;
+            }
+        }
+
+        h2 {
+            font-family: 'Roboto Slab', serif;
+            text-align: center;
+        }
+
+        p {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 100%;
+            margin-left: 3vw;
+        }
+
+        img {
+            padding: 2vw;
+        }
+
+        .filter, .aldersFilterBTN {
+            border: solid black 1px;
+            border-radius: 50%;
+            margin: 1vw;
+            padding: 1vw;
+        }
+
+        button {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: darkgrey;
+        }
+
+        .valgt {
+            background-color: darkgray;
+        }
+
+        h1 {
+            font-family: 'Roboto Slab', serif;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+    </style>
+</head>
+
+<body>
+   <h1>Alle</h1>
+    <nav>
+        <button class="filter valgt" data-køn="alle">Alle</button>
+        <button class="filter" data-køn="m">Mænd</button>
+        <button class="filter" data-køn="k">Kvinder</button>
+        <button class="filter" data-køn="andet">Andet</button>
+
+        <button class="aldersFilterBTN" data-alder_under="55">Vis dem over 55 år</button>
+    </nav>
+
+    <section class="data-container">
+    </section>
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <p class="navn"></p>
+            <p class="efternavn"></p>
+            <p class="sex"></p>
+            <p class="alder"></p>
+            <p class="religion"></p>
+            <p class="hobby"></p>
+            <p class="kaeledyr"></p>
+            <p class="job"></p>
+            <p class="by"></p>
+            <p class="rpc"></p>
+        </article>
+    </template>
+
+    <script>
+        const link = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json";
+        let personer = [];
+        let filter = "alle";
+        let filterAlder = 0;
+        const container = document.querySelector(".data-container");
+        const personTemplate = document.querySelector("template");
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            loadData();
+            addEventListenersToButtons();
+        }
+
+        async function loadData() {
+            const response = await fetch(link);
+            personer = await response.json();
+            console.log(personer);
+            visPersoner();
+        }
+
+        function visPersoner() {
+            container.innerHTML = "";
+
+            personer.feed.entry.forEach(person => {
+                if ((filter == "alle" || filter == person.gsx$sex.$t)&&(person.gsx$alder.$t > filterAlder)) {
+                    let klon = personTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
+                    klon.querySelector("img").src = person.gsx$billede.$t;
+                    klon.querySelector(".sex").textContent = `Køn: ${person.gsx$sex.$t}`;
+                    klon.querySelector(".alder").textContent = `Alder: ${person.gsx$alder.$t}`;
+                    klon.querySelector(".religion").textContent = `Religion: ${person.gsx$religion.$t}`;
+                    klon.querySelector(".hobby").textContent = `Hobby: ${person.gsx$hobby.$t}`;
+                    klon.querySelector(".kaeledyr").textContent = `Kælydyr: ${person.gsx$kaeledyr.$t}`;
+                    klon.querySelector(".job").textContent = `Job: ${person.gsx$job.$t}`;
+                    klon.querySelector(".by").textContent = `By: ${person.gsx$by.$t}`;
+                    klon.querySelector(".rpc").textContent = `RPC: ${person.gsx$rpc.$t}`;
+                    container.appendChild(klon);
+                }
+            })
+        }
+
+        function addEventListenersToButtons () {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+            document.querySelector(".aldersFilterBTN").addEventListener("click", aldersFiltrering);
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.køn;
+            document.querySelector("h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elm =>{
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            visPersoner();
+        }
+
+        function aldersFiltrering() {
+            if (filterAlder == 0){
+                filterAlder = 55;
+                this.classList.add("valgt")
+            } else {
+                filterAlder = 0;
+                this.classList.remove("valgt")
+            }
+            visPersoner();
+        }
+
+
+    </script>
+
+</body></html>
