@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Persongalleri</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        h2 {
+            font-family: 'Roboto Slab', serif;
+            text-align: center;
+        }
+
+        p {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 100%;
+            margin-left: 3vw;
+        }
+
+        h1 {
+            font-family: 'Roboto Slab', serif;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        #detalje {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.5);
+            z-index: 10;
+            overflow: scroll;
+        }
+
+        #detalje button {
+            font-family: 'Montserrat', sans-serif;+9
+            font-size: 2rem;
+            position: fixed;
+        }
+
+        #person-detalje {
+            background-color: white;
+            border-radius: 10%;
+            width: 50vw;
+            margin: 0 auto;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <section id="detalje" class="skjul">
+        <button> Gå tilbage </button>
+        <article id="person-detalje">
+            <h2></h2>
+            <img src="" alt="">
+            <p class="alder"></p>
+            <p class="job"></p>
+            <p class="hobby"></p>
+        </article>
+    </section>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+
+        const link = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json";
+        let personer = [];
+        const detalje = document.querySelector("#detalje");
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            loadData();
+        }
+
+        async function loadData() {
+            const response = await fetch(link);
+            personer = await response.json();
+            console.log(personer);
+            visPerson();
+        }
+
+        function visPerson() {
+            detalje.querySelector("button").addEventListener("click", ()=>{
+                history.back();
+            })
+            personer.feed.entry.forEach(person => {
+                if (person.gsx$id.$t == id) {
+                    detalje.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
+                    detalje.querySelector("img").src = person.gsx$billede.$t;
+                    detalje.querySelector(".alder").textContent = person.gsx$alder.$t;
+                    detalje.querySelector(".job").textContent = person.gsx$job.$t;
+                    detalje.querySelector(".hobby").textContent = person.gsx$hobby.$t;
+                }
+            })
+        }
+
+    </script>
+
+</body></html>

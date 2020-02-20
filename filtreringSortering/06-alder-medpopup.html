@@ -11,6 +11,7 @@
             box-sizing: border-box;
         }
 
+
         img {
             width: 100%;
         }
@@ -72,7 +73,8 @@
             padding: 2vw;
         }
 
-        .filter, .aldersFilterBTN {
+        .filter,
+        .aldersFilterBTN {
             border: solid black 1px;
             border-radius: 50%;
             margin: 1vw;
@@ -102,11 +104,37 @@
             font-size: 3rem;
         }
 
+        #detalje {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.5);
+            z-index: 10;
+            overflow: scroll;
+        }
+
+        #detalje button {
+            font-size: 2rem;
+            position: fixed;
+        }
+
+        #person-detalje {
+            background-color: white;
+            border-radius: 10%;
+            width: 50vw;
+            margin: 0 auto;
+        }
+
+        .skjul {
+            display: none;
+        }
+
     </style>
 </head>
 
 <body>
-   <h1>Alle</h1>
+    <h1>Alle</h1>
     <nav>
         <button class="filter valgt" data-køn="alle">Alle</button>
         <button class="filter" data-køn="m">Mænd</button>
@@ -135,6 +163,17 @@
         </article>
     </template>
 
+    <section id="detalje" class="skjul">
+        <button>X</button>
+        <article id="person-detalje">
+            <h2>Navn</h2>
+            <img src="" alt="">
+            <p class="popup-alder"></p>
+            <p class="popup-job"></p>
+            <p class="popup-hobby"></p>
+        </article>
+    </section>
+
     <script>
         const link = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json";
         let personer = [];
@@ -142,6 +181,7 @@
         let filterAlder = 0;
         const container = document.querySelector(".data-container");
         const personTemplate = document.querySelector("template");
+        const detalje = document.querySelector("#detalje");
 
         document.addEventListener("DOMContentLoaded", start);
 
@@ -161,7 +201,7 @@
             container.innerHTML = "";
 
             personer.feed.entry.forEach(person => {
-                if ((filter == "alle" || filter == person.gsx$sex.$t)&&(person.gsx$alder.$t > filterAlder)) {
+                if ((filter == "alle" || filter == person.gsx$sex.$t) && (person.gsx$alder.$t > filterAlder)) {
                     let klon = personTemplate.cloneNode(true).content;
                     klon.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
                     klon.querySelector("img").src = person.gsx$billede.$t;
@@ -173,12 +213,26 @@
                     klon.querySelector(".job").textContent = `Job: ${person.gsx$job.$t}`;
                     klon.querySelector(".by").textContent = `By: ${person.gsx$by.$t}`;
                     klon.querySelector(".rpc").textContent = `RPC: ${person.gsx$rpc.$t}`;
+                    klon.querySelector("article").addEventListener("click", () => {
+                        visDetalje(person)
+                    });
                     container.appendChild(klon);
                 }
             })
         }
 
-        function addEventListenersToButtons () {
+        function visDetalje(person) {
+            detalje.classList.remove("skjul");
+            detalje.querySelector("button").addEventListener("click", () => detalje.classList.add("skjul"));
+            console.log(person);
+            detalje.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
+            detalje.querySelector("img").src = person.gsx$billede.$t;
+            detalje.querySelector(".popup-alder").textContent = person.gsx$alder.$t;
+            detalje.querySelector(".popup-job").textContent = person.gsx$job.$t;
+            detalje.querySelector(".popup-hobby").textContent = person.gsx$hobby.$t;
+        }
+
+        function addEventListenersToButtons() {
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
             })
@@ -189,7 +243,7 @@
             console.log("FILTER");
             filter = this.dataset.køn;
             document.querySelector("h1").textContent = this.textContent;
-            document.querySelectorAll(".filter").forEach(elm =>{
+            document.querySelectorAll(".filter").forEach(elm => {
                 elm.classList.remove("valgt");
             })
             this.classList.add("valgt");
@@ -197,7 +251,7 @@
         }
 
         function aldersFiltrering() {
-            if (filterAlder == 0){
+            if (filterAlder == 0) {
                 filterAlder = 55;
                 this.classList.add("valgt")
             } else {
@@ -206,8 +260,6 @@
             }
             visPersoner();
         }
-
-
     </script>
 
 </body></html>

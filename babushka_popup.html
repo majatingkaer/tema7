@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Babushka hjemmeside</title>
+    <link href="https://fonts.googleapis.com/css?family=Audiowide|Bungee+Inline|Bungee+Shade&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Baumans&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: whitesmoke;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Bungee Shade', cursive;
+            font-size: 6rem;
+            text-align: center;
+            color: #a70606;
+            margin: 0px;
+        }
+
+        h2 {
+            font-family: 'Baumans', cursive;
+            color: whitesmoke;
+            background-color: #a70606;
+        }
+
+        h3 {
+            font-family: 'Baumans', cursive;
+            font-size: 2.5rem;
+            color: #a70606;
+            text-align: center;
+            margin-top: 8vw;
+            margin-bottom: 0vw;
+        }
+
+        p {
+            font-family: 'Baumans', cursive;
+            padding-left: 2vw;
+            color: #a70606;
+        }
+
+        .data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            max-width: 1200px;
+            grid-gap: 3vw;
+            margin: 3vw 10vw 0vw 10vw;
+        }
+
+        article {
+            border: 2px solid #a70606;
+        }
+
+        article:hover {
+            transition: .2s ease-out;
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        button {
+            font-family: 'Baumans', cursive;
+            color: #a70606;
+            text-align: center;
+            font-size: 1.7rem;
+            margin: 5px;
+            border: solid #a70606 2px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .valgt {
+            background-color: #a70606;
+            color: white;
+        }
+
+        button:hover {
+            transition: .2s ease-out;
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        #detalje {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.5);
+            z-index: 10;
+            overflow: scroll;
+        }
+
+        #detalje img {
+            max-width: 35vw;
+            margin-left: 7.5vw;
+        }
+
+        #detalje button {
+            font-size: 2rem;
+            position: fixed;
+        }
+
+        #ret_detalje {
+            background-color: white;
+            width: 50vw;
+            margin: 0 auto;
+            margin-top: 2vw;
+        }
+
+        .skjul {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <h1>BISTRO BABUSHKA</h1>
+    <nav>
+        <button class="filter valgt" data-kategori="alle">Alle retter</button>
+        <button class="filter" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
+        <button class="filter" data-kategori="sideorders">Sideorders</button>
+        <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
+    </nav>
+
+
+    <h3>Alle retter</h3>
+
+    <section class="data-container">
+    </section>
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <p class="kategori"></p>
+            <p class="pris"></p>
+            <p class="kort"></p>
+            <p class="lang"></p>
+            <p class="oprindelse"></p>
+        </article>
+    </template>
+
+    <section id="detalje" class="skjul">
+        <button>X</button>
+        <article id="ret_detalje">
+            <h2></h2>
+            <img src="" alt="">
+            <p class="kategori"></p>
+            <p class="pris"></p>
+            <p class="lang"></p>
+            <p class="oprindelse"></p>
+        </article>
+    </section>
+
+
+    <script>
+        const link = "https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json";
+        let retter = [];
+        let filter = "alle";
+        const container = document.querySelector(".data-container");
+        const retTemplate = document.querySelector("template");
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            loadData();
+            klikBar();
+        }
+
+        async function loadData() {
+            const response = await fetch(link);
+            retter = await response.json();
+            console.log(retter);
+            visRetter();
+        }
+
+        function visRetter() {
+            container.innerHTML = "";
+
+            retter.feed.entry.forEach(ret => {
+                if (filter == "alle" || filter == ret.gsx$kategori.$t) {
+                    let klon = retTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    klon.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
+                    klon.querySelector(".kategori").textContent = `Kategori - ${ret.gsx$kategori.$t}`;
+                    klon.querySelector(".pris").textContent = `${ret.gsx$pris.$t} kr`;
+                    klon.querySelector(".kort").textContent = `${ret.gsx$kort.$t}`;
+                    /*klon.querySelector(".lang").textContent = `Lang: ${ret.gsx$lang.$t}`;*/
+                    klon.querySelector(".oprindelse").textContent = `Oprindeligt fra ${ret.gsx$oprindelse.$t}`;
+                    klon.querySelector("article").addEventListener("click", () => {
+                        visDetalje(ret)
+                    });
+                    container.appendChild(klon);
+                }
+            })
+        }
+
+        function visDetalje(ret) {
+            detalje.classList.remove("skjul");
+            detalje.querySelector("button").addEventListener("click", () => detalje.classList.add("skjul"));
+            console.log(ret);
+            detalje.querySelector("h2").textContent = ret.gsx$navn.$t;
+            detalje.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
+            detalje.querySelector(".kategori").textContent = `Kategori - ${ret.gsx$kategori.$t}`;
+            detalje.querySelector(".pris").textContent = `${ret.gsx$pris.$t} kr`;
+            detalje.querySelector(".lang").textContent = ret.gsx$lang.$t;
+            detalje.querySelector(".oprindelse").textContent = `Oprindeligt fra ${ret.gsx$oprindelse.$t}`;
+
+        }
+
+        function klikBar() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.kategori;
+            document.querySelector("h3").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elementer => {
+                elementer.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            visRetter();
+        }
+    </script>
+</body></html>
